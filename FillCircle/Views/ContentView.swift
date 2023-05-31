@@ -12,7 +12,7 @@ struct ContentView: View {
     var lineWidth: CGFloat = 30.0
 
     var Background: some View {
-        Color(UIColor(red: 11/255.0, green: 15/255.0, blue: 128/255.0, alpha: 1))
+        Color.blukraine()
     }
     
     var body: some View {
@@ -23,9 +23,7 @@ struct ContentView: View {
                     Rectangle()
                         .foregroundColor(.black)
                         .overlay {
-                            Text("03:19")
-                                .font(Font(CTFont(CTFontUIFontType.alertHeader, size: 32)))
-                                .foregroundColor(.yellow)
+                            CountdownTimer(timerDuration: 150)
                         }
                         .frame(width: 200, height: 50)
                         

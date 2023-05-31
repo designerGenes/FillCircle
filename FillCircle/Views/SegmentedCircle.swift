@@ -7,11 +7,6 @@
 
 import SwiftUI
 
-struct RunningSegment {
-    var duration: Float
-    var isBreak: Bool = false
-}
-
 struct SegmentedCircle: View {
     var lineWidth: CGFloat = 30
     var runningSegments: [RunningSegment] = []
