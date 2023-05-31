@@ -13,6 +13,7 @@ struct RunningSegment {
 }
 
 struct SegmentedCircle: View {
+    var lineWidth: CGFloat = 30
     var runningSegments: [RunningSegment] = []
     private var totalDuration: Float {
         runningSegments.reduce(0, {$0 + $1.duration})
@@ -26,7 +27,7 @@ struct SegmentedCircle: View {
             let newSegment = Circle()
                 .trim(from: 0, to: CGFloat(segment.duration / totalDuration))
                 .stroke(segment.isBreak ? Color.orange : .yellow,
-                        style: StrokeStyle(lineWidth: 30))
+                        style: StrokeStyle(lineWidth: lineWidth))
                 .rotationEffect(Angle(degrees: 360 / -4) + rotation)
             slices.append(AnyView(newSegment))
         }
@@ -40,11 +41,10 @@ struct SegmentedCircle: View {
     var body: some View {
         ZStack {
             Circle()
-                .stroke(Color.white.opacity(0.6), style: StrokeStyle(lineWidth: 30))
+                .stroke(Color.white.opacity(0.6), style: StrokeStyle(lineWidth: lineWidth))
             convertSegmentsToSlices()
             
         }
-        .padding(50)
     }
 }
 

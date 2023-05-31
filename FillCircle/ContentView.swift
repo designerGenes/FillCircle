@@ -8,18 +8,9 @@
 import SwiftUI
 
 struct ContentView: View {
-    @State var percentYellow: CGFloat = 0.5
-    @State var percentOrange: CGFloat = 0.3
-    
-    func animatePercentageChange() {
-        percentYellow = CGFloat(Int.random(in: 0..<100)) / 100
-        percentOrange = 1 - percentYellow
-    }
-    
-    func animateRotation() {
-        
-    }
-    
+    var segments: [RunningSegment] = []
+    var lineWidth: CGFloat = 30.0
+
     var Background: some View {
         Color(UIColor(red: 11/255.0, green: 15/255.0, blue: 128/255.0, alpha: 1))
     }
@@ -27,38 +18,41 @@ struct ContentView: View {
     var body: some View {
         ZStack {
             Background
-            ZStack {
-                Circle() // background
-                    .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: 30))
-                Circle()  // YELLOW
-                    .trim(from: 0, to: percentYellow)
-                    .stroke(Color.yellow, style: StrokeStyle(lineWidth: 30))
-                    .rotationEffect(.init(degrees: -90))
-                    .animation(.default)
-                Circle() // ORANGE
-                    .trim(from: 0, to: percentOrange)
-                    .stroke(Color.orange, style: StrokeStyle(lineWidth: 30))
-                    .rotationEffect(.init(degrees: -200))
-                    .animation(.default)
-                Circle() // center
-                
-                Circle()
-                    .frame(width: 20, height: 20)
-                    .foregroundColor(.yellow)
-                    .onTapGesture {
-                        animatePercentageChange()
-                    }
-                
-                    
+            VStack {
+                HStack {
+                    Rectangle()
+                        .foregroundColor(.black)
+                        .overlay {
+                            Text("03:19")
+                                .font(Font(CTFont(CTFontUIFontType.alertHeader, size: 32)))
+                                .foregroundColor(.yellow)
+                        }
+                        .frame(width: 200, height: 50)
+                        
+                }
+                ZStack {
+                    Circle() // background
+                        .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
+                    SegmentedCircle(runningSegments: segments)
+                    Circle()
+                        .padding() // center
+                        
+                }
+                .padding(50)
             }
-            .padding(50)
         }
         .ignoresSafeArea()
+        
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView()
+        ContentView(segments: [
+            RunningSegment(duration: 120),
+            RunningSegment(duration: 120, isBreak: true),
+            RunningSegment(duration: 240),
+            RunningSegment(duration: 120, isBreak: true)
+        ], lineWidth: 30)
     }
 }
