@@ -11,6 +11,7 @@
 		A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C432A2658D2007BD3FC /* ContentView.swift */; };
 		A8583C462A2658D4007BD3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8583C452A2658D4007BD3FC /* Assets.xcassets */; };
 		A8583C492A2658D4007BD3FC /* Preview Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8583C482A2658D4007BD3FC /* Preview Assets.xcassets */; };
+		A8583C502A26BA95007BD3FC /* SegmentedCircle.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C4F2A26BA95007BD3FC /* SegmentedCircle.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -19,6 +20,7 @@
 		A8583C432A2658D2007BD3FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
 		A8583C452A2658D4007BD3FC /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		A8583C482A2658D4007BD3FC /* Preview Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = "Preview Assets.xcassets"; sourceTree = "<group>"; };
+		A8583C4F2A26BA95007BD3FC /* SegmentedCircle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SegmentedCircle.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -53,6 +55,7 @@
 			children = (
 				A8583C412A2658D2007BD3FC /* FillCircleApp.swift */,
 				A8583C432A2658D2007BD3FC /* ContentView.swift */,
+				A8583C4F2A26BA95007BD3FC /* SegmentedCircle.swift */,
 				A8583C452A2658D4007BD3FC /* Assets.xcassets */,
 				A8583C472A2658D4007BD3FC /* Preview Content */,
 			);
@@ -138,6 +141,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */,
+				A8583C502A26BA95007BD3FC /* SegmentedCircle.swift in Sources */,
 				A8583C422A2658D2007BD3FC /* FillCircleApp.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
