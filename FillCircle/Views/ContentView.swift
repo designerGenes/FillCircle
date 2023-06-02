@@ -9,14 +9,13 @@ import SwiftUI
 
 
 
-struct ContentView: View, CountdownTimerDelegate {
-    func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
-        self.percentFinished = remainingDuration / countdownDuration
-    }
+struct ContentView: View {
     
-    @State private var percentFinished: Double = 0
-    @State var countdownDuration: Double = 150
-    var segments: [RunningSegment] = []
+    @State var percentFinished: Double = 0.0
+    var countdownDuration: TimeInterval {
+        return segments.reduce(0, { $0 + $1.duration})
+    }
+    @State var segments: [RunningSegment]
     var lineWidth: CGFloat = 30.0
 
     var Background: some View {
@@ -49,15 +48,21 @@ struct ContentView: View, CountdownTimerDelegate {
                     SegmentedCircle(runningSegments: segments)
                     Circle()
                         .padding() // center
-                        
                 }
-//                .rotationEffect(Angle(degrees: 360 * Countdown.getCompletionPercent()))
+                .rotationEffect(Angle(degrees: (360  * self.percentFinished)))
                 .padding(50)
             }
         }
         .ignoresSafeArea()
     }
     
+}
+
+extension ContentView: CountdownTimerDelegate {
+    // MARK: - CountdownTimerDelegate methods
+    func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
+        self.percentFinished = remainingDuration / countdownDuration
+    }
 }
 
 struct ContentView_Previews: PreviewProvider {
@@ -67,6 +72,6 @@ struct ContentView_Previews: PreviewProvider {
             RunningSegment(duration: 120, isBreak: true),
             RunningSegment(duration: 240),
             RunningSegment(duration: 120, isBreak: true)
-        ], lineWidth: 30)
+        ])
     }
 }

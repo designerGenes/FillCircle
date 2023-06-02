@@ -8,6 +8,6 @@
 import Foundation
 
 struct RunningSegment {
-    var duration: Float
+    var duration: TimeInterval
     var isBreak: Bool = false
 }

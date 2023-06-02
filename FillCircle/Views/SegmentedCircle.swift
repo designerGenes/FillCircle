@@ -10,7 +10,7 @@ import SwiftUI
 struct SegmentedCircle: View {
     var lineWidth: CGFloat = 30
     var runningSegments: [RunningSegment] = []
-    private var totalDuration: Float {
+    private var totalDuration: TimeInterval {
         runningSegments.reduce(0, {$0 + $1.duration})
     }
     

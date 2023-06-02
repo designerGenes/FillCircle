@@ -22,7 +22,7 @@ protocol CountdownTimerDelegate {
 
 struct CountdownTimer: View {
     let totalTimerDuration: TimeInterval // original time
-    @State var timerRemainingDuration: TimeInterval = 0 // used for pausing
+    @State var timerRemainingDuration: TimeInterval // used for pausing
     @State private var isTimerFinished: Bool = false
     @State private var isTimerRunning = false
     @State private var isTimerPaused = false
@@ -46,7 +46,7 @@ struct CountdownTimer: View {
     
     init(timerDuration: TimeInterval) {
         self.totalTimerDuration = timerDuration
-        self.timerRemainingDuration = totalTimerDuration
+        self._timerRemainingDuration = State(initialValue: timerDuration)
     }
     
     func startTimer() {
@@ -56,8 +56,9 @@ struct CountdownTimer: View {
             } else {
                 stopTimer()
             }
+            self.delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
         }
-        delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
+        
         isTimerRunning = true
         isTimerPaused = false
     }
