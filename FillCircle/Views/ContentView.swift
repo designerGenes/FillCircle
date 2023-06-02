@@ -7,12 +7,26 @@
 
 import SwiftUI
 
-struct ContentView: View {
+
+
+struct ContentView: View, CountdownTimerDelegate {
+    func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
+        self.percentFinished = remainingDuration / countdownDuration
+    }
+    
+    @State private var percentFinished: Double = 0
+    @State var countdownDuration: Double = 150
     var segments: [RunningSegment] = []
     var lineWidth: CGFloat = 30.0
 
     var Background: some View {
         Color.blukraine()
+    }
+    
+    var Countdown: CountdownTimer {
+        var out = CountdownTimer(timerDuration: 150)
+        out.delegate = self
+        return out
     }
     
     var body: some View {
@@ -22,11 +36,12 @@ struct ContentView: View {
                 HStack {
                     Rectangle()
                         .foregroundColor(.black)
+                        .cornerRadius(15)
                         .overlay {
-                            CountdownTimer(timerDuration: 150)
+                            Countdown
+                                .foregroundColor(.yellow)
                         }
                         .frame(width: 200, height: 50)
-                        
                 }
                 ZStack {
                     Circle() // background
@@ -36,12 +51,13 @@ struct ContentView: View {
                         .padding() // center
                         
                 }
+//                .rotationEffect(Angle(degrees: 360 * Countdown.getCompletionPercent()))
                 .padding(50)
             }
         }
         .ignoresSafeArea()
-        
     }
+    
 }
 
 struct ContentView_Previews: PreviewProvider {

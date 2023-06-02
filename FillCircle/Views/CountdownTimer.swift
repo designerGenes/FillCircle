@@ -15,80 +15,84 @@ enum CountdownTimerMode {
 
 import SwiftUI
 
+
+protocol CountdownTimerDelegate {
+    func didUpdate(timer: CountdownTimer, remainingDuration: Double)
+}
+
 struct CountdownTimer: View {
     let totalTimerDuration: TimeInterval // original time
-    @State var timerDuration: TimeInterval // used for pausing
+    @State var timerRemainingDuration: TimeInterval = 0 // used for pausing
     @State private var isTimerFinished: Bool = false
-    @State private var remainingTime: TimeInterval?
     @State private var isTimerRunning = false
     @State private var isTimerPaused = false
     @State private var timer: Timer?
-
+    var delegate: CountdownTimerDelegate?
+    
+    
     var body: some View {
         Text("\(formattedTime())")
             .font(.largeTitle)
             .onTapGesture {
                 if isTimerRunning {
                     pauseTimer()
-                } else {
-                    if isTimerPaused {
-                        resumeTimer()
-                    } else if !isTimerFinished  {
-                        startTimer()
-                    }
+                } else if isTimerPaused {
+                    resumeTimer()
+                } else if !isTimerFinished  {
+                    startTimer()
                 }
             }
     }
-
+    
     init(timerDuration: TimeInterval) {
         self.totalTimerDuration = timerDuration
-        self.timerDuration = timerDuration
+        self.timerRemainingDuration = totalTimerDuration
     }
-
+    
     func startTimer() {
-        remainingTime = timerDuration
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if remainingTime! > 0 {
-                remainingTime! -= 1
+            if timerRemainingDuration > 0 {
+                timerRemainingDuration -= 1
             } else {
                 stopTimer()
             }
         }
+        delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
         isTimerRunning = true
         isTimerPaused = false
     }
-
+    
     func pauseTimer() {
-        timerDuration = remainingTime ?? 0
         timer?.invalidate()
         timer = nil
         isTimerRunning = false
         isTimerPaused = true
     }
-
+    
     func resumeTimer() {
         isTimerPaused = false
         startTimer()
     }
-
+    
     func stopTimer() {
+        timerRemainingDuration = 0
         self.isTimerFinished = true
         timer?.invalidate()
         timer = nil
         isTimerRunning = false
         isTimerPaused = false
     }
-
+    
     func formattedTime() -> String {
-        let minutes = Int(remainingTime ?? timerDuration) / 60
-        let seconds = Int(remainingTime ?? timerDuration) % 60
+        let minutes = Int(timerRemainingDuration) / 60
+        let seconds = Int(timerRemainingDuration) % 60
         return String(format: "%02d:%02d", minutes, seconds)
     }
 }
 
 struct CountdownTimer_Previews: PreviewProvider {
     static var previews: some View {
-        CountdownTimer(timerDuration: 10)
+        CountdownTimer(timerDuration: 90)
     }
 }
 
