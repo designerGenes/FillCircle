@@ -18,12 +18,12 @@ struct SegmentedCircle: View {
         var slices: [AnyView] = []
         for (x, segment) in runningSegments.enumerated() {
             let sumUsedPercentage = runningSegments[0..<x].reduce(0, {$0 + $1.duration}) / totalDuration
-            let rotation = Angle(degrees: Double(360) * Double(sumUsedPercentage))
+            let rotation = Double(360) * Double(sumUsedPercentage)
             let newSegment = Circle()
                 .trim(from: 0, to: CGFloat(segment.duration / totalDuration))
                 .stroke(segment.isBreak ? Color.orange : .yellow,
                         style: StrokeStyle(lineWidth: lineWidth))
-                .rotationEffect(Angle(degrees: 360 / -4) + rotation)
+                .rotationEffect(Angle(degrees: -90 + rotation))
             slices.append(AnyView(newSegment))
         }
         return AnyView(ZStack {
@@ -53,6 +53,7 @@ struct SegmentedCircle_Previews: PreviewProvider {
                 RunningSegment(duration: 240),
                 RunningSegment(duration: 120, isBreak: true)
             ])
+            .padding()
         }
     }
 }

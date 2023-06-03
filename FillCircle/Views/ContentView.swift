@@ -11,19 +11,24 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var percentFinished: Double = 0.0
+    @State var percentFinished: Double = 0.0 {
+        didSet {
+            print(percentFinished)
+        }
+    }
+    @State var segments: [RunningSegment]
     var countdownDuration: TimeInterval {
         return segments.reduce(0, { $0 + $1.duration})
     }
-    @State var segments: [RunningSegment]
+    
     var lineWidth: CGFloat = 30.0
-
+    
     var Background: some View {
         Color.blukraine()
     }
     
     var Countdown: CountdownTimer {
-        var out = CountdownTimer(timerDuration: 150)
+        var out = CountdownTimer(timerDuration: countdownDuration)
         out.delegate = self
         return out
     }
@@ -49,7 +54,10 @@ struct ContentView: View {
                     Circle()
                         .padding() // center
                 }
-                .rotationEffect(Angle(degrees: (360  * self.percentFinished)))
+                .rotationEffect(Angle(degrees: (360 * self.percentFinished)))
+                .animation(Animation.easeInOut(duration: 1.0))
+                
+                
                 .padding(50)
             }
         }
@@ -61,17 +69,18 @@ struct ContentView: View {
 extension ContentView: CountdownTimerDelegate {
     // MARK: - CountdownTimerDelegate methods
     func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
-        self.percentFinished = remainingDuration / countdownDuration
+        self.percentFinished = 1 - (remainingDuration / countdownDuration)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
-        ContentView(segments: [
-            RunningSegment(duration: 120),
-            RunningSegment(duration: 120, isBreak: true),
-            RunningSegment(duration: 240),
-            RunningSegment(duration: 120, isBreak: true)
-        ])
+        ContentView(percentFinished: 0,
+                    segments: [
+                        RunningSegment(duration: 120),
+                        RunningSegment(duration: 60, isBreak: true),
+                        RunningSegment(duration: 120),
+                        RunningSegment(duration: 60, isBreak: true)
+                    ])
     }
 }

@@ -12,10 +12,10 @@ struct FillCircleApp: App {
     var body: some Scene {
         WindowGroup {
             ContentView(segments: [
-                RunningSegment(duration: 120),
-                RunningSegment(duration: 120, isBreak: true),
-                RunningSegment(duration: 240),
-                RunningSegment(duration: 120, isBreak: true)
+                RunningSegment(duration: 30),
+                RunningSegment(duration: 10, isBreak: true),
+                RunningSegment(duration: 30),
+                RunningSegment(duration: 10, isBreak: true)
             ])
         }
     }
