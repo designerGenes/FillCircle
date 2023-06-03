@@ -11,11 +11,7 @@ import SwiftUI
 
 struct ContentView: View {
     
-    @State var percentFinished: Double = 0.0 {
-        didSet {
-            print(percentFinished)
-        }
-    }
+    @State var percentFinished: Double = 0.0 
     @State var segments: [RunningSegment]
     var countdownDuration: TimeInterval {
         return segments.reduce(0, { $0 + $1.duration})
@@ -54,7 +50,7 @@ struct ContentView: View {
                     Circle()
                         .padding() // center
                 }
-                .rotationEffect(Angle(degrees: (360 * self.percentFinished)))
+                .rotationEffect(Angle(degrees: (-360 * self.percentFinished)))
                 .animation(Animation.easeInOut(duration: 1.0))
                 
                 
