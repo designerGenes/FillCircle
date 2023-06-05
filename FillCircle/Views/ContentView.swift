@@ -10,11 +10,11 @@ import SwiftUI
 
 
 struct ContentView: View {
-    
-    @State var percentFinished: Double = 0.0 
+    @State var isMenuOpen: Bool = false
+    @State var percentFinished: Double = 0.0
     @State var segments: [RunningSegment]
     var countdownDuration: TimeInterval {
-        return segments.reduce(0, { $0 + $1.duration})
+        return segments.reduce(0, { $0 + $1.duration })
     }
     
     var lineWidth: CGFloat = 30.0
@@ -24,42 +24,76 @@ struct ContentView: View {
     }
     
     var Countdown: CountdownTimer {
-        var out = CountdownTimer(timerDuration: countdownDuration)
+        var out = CountdownTimer(segments: segments)
         out.delegate = self
         return out
     }
     
-    var body: some View {
-        ZStack {
-            Background
-            VStack {
-                HStack {
-                    Rectangle()
-                        .foregroundColor(.black)
-                        .cornerRadius(15)
-                        .overlay {
-                            Countdown
-                                .foregroundColor(.yellow)
-                        }
-                        .frame(width: 200, height: 50)
-                }
-                ZStack {
-                    Circle() // background
-                        .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
-                    SegmentedCircle(runningSegments: segments)
-                    Circle()
-                        .padding() // center
-                }
-                .rotationEffect(Angle(degrees: (-360 * self.percentFinished)))
-                .animation(Animation.easeInOut(duration: 1.0))
-                
-                
-                .padding(50)
-            }
-        }
-        .ignoresSafeArea()
+    func tappedOpenMenu() {
+        isMenuOpen = !isMenuOpen
     }
     
+    var body: some View {
+        ZStack {
+            ZStack {
+                Background
+                VStack {
+                    Spacer()
+                        .frame(height: 64)
+                    HStack {
+                        Image(systemName: "line.horizontal.3")
+                            .foregroundColor(.yellow)
+                            .onTapGesture {
+                                tappedOpenMenu()
+                            }
+                            .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 0))
+                        Spacer()
+                        Image(systemName: "x.circle")
+                            .foregroundColor(.yellow)
+                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 24))
+                    }
+                    Spacer()
+                }
+                VStack {
+                    HStack {
+                        Rectangle()
+                            .foregroundColor(.black)
+                            .cornerRadius(15)
+                            .overlay {
+                                Countdown
+                                    .foregroundColor(.yellow)
+                            }
+                            .frame(width: 200, height: 50)
+                    }
+                    ZStack {
+                        Circle() // background
+                            .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
+                        SegmentedCircle(runningSegments: segments)
+                        Circle()
+                            .padding() // center
+                    }
+                    .rotationEffect(Angle(degrees: (-360 * self.percentFinished)))
+                    .padding(50)
+                }
+            }
+            .ignoresSafeArea()
+            .navigationBarTitle("Run")
+            .offset(x: isMenuOpen ? UIScreen.main.bounds.width / 2.5 : 0)
+            .animation(Animation.easeInOut, value: 1)
+            if isMenuOpen {
+                let width = UIScreen.main.bounds.width / 2.5
+                Rectangle()
+                    .foregroundColor(.yellow)
+                    .frame(width: width, height: UIScreen.main.bounds.height)
+                    .position(x: width / 2, y: UIScreen.main.bounds.height / 2)
+                    .ignoresSafeArea(.all)
+                    .transition(.move(edge: .trailing))
+                
+            }
+        }
+        
+        
+    }
 }
 
 extension ContentView: CountdownTimerDelegate {
