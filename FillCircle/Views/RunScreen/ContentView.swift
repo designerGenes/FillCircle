@@ -41,15 +41,12 @@ struct ContentView: View {
                     Spacer()
                         .frame(height: 64)
                     HStack {
+                        Spacer()
                         Image(systemName: "line.horizontal.3")
                             .foregroundColor(.yellow)
                             .onTapGesture {
                                 tappedOpenMenu()
                             }
-                            .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 0))
-                        Spacer()
-                        Image(systemName: "x.circle")
-                            .foregroundColor(.yellow)
                             .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 24))
                     }
                     Spacer()
@@ -78,14 +75,14 @@ struct ContentView: View {
             }
             .ignoresSafeArea()
             .navigationBarTitle("Run")
-            .offset(x: isMenuOpen ? UIScreen.main.bounds.width / 2.5 : 0)
+            .offset(x: isMenuOpen ? -UIScreen.main.bounds.width / 2.5 : 0)
             .animation(Animation.easeInOut, value: 1)
             if isMenuOpen {
                 let width = UIScreen.main.bounds.width / 2.5
                 Rectangle()
                     .foregroundColor(.yellow)
                     .frame(width: width, height: UIScreen.main.bounds.height)
-                    .position(x: width / 2, y: UIScreen.main.bounds.height / 2)
+                    .position(x: UIScreen.main.bounds.width - (width / 2), y: UIScreen.main.bounds.height / 2)
                     .ignoresSafeArea(.all)
                     .transition(.move(edge: .trailing))
                 

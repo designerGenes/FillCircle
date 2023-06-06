@@ -7,6 +7,9 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		A83825A72A2F74DE00598DEF /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825A62A2F74DE00598DEF /* LaunchView.swift */; };
+		A83825A92A2F759A00598DEF /* RunPresetListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825A82A2F759A00598DEF /* RunPresetListViewItem.swift */; };
+		A83825AB2A2F7B0600598DEF /* RunPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825AA2A2F7B0600598DEF /* RunPreset.swift */; };
 		A8583C422A2658D2007BD3FC /* FillCircleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C412A2658D2007BD3FC /* FillCircleApp.swift */; };
 		A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C432A2658D2007BD3FC /* ContentView.swift */; };
 		A8583C462A2658D4007BD3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8583C452A2658D4007BD3FC /* Assets.xcassets */; };
@@ -18,6 +21,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		A83825A62A2F74DE00598DEF /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
+		A83825A82A2F759A00598DEF /* RunPresetListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunPresetListViewItem.swift; sourceTree = "<group>"; };
+		A83825AA2A2F7B0600598DEF /* RunPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunPreset.swift; sourceTree = "<group>"; };
 		A8583C3E2A2658D2007BD3FC /* FillCircle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FillCircle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8583C412A2658D2007BD3FC /* FillCircleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillCircleApp.swift; sourceTree = "<group>"; };
 		A8583C432A2658D2007BD3FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -40,6 +46,25 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		A83825A42A2F74CA00598DEF /* RunScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A8583C432A2658D2007BD3FC /* ContentView.swift */,
+				A8583C4F2A26BA95007BD3FC /* SegmentedCircle.swift */,
+				A8583C592A27937F007BD3FC /* CountdownTimer.swift */,
+			);
+			path = RunScreen;
+			sourceTree = "<group>";
+		};
+		A83825A52A2F74D500598DEF /* LaunchScreen */ = {
+			isa = PBXGroup;
+			children = (
+				A83825A62A2F74DE00598DEF /* LaunchView.swift */,
+				A83825A82A2F759A00598DEF /* RunPresetListViewItem.swift */,
+			);
+			path = LaunchScreen;
+			sourceTree = "<group>";
+		};
 		A8583C352A2658D2007BD3FC = {
 			isa = PBXGroup;
 			children = (
@@ -80,9 +105,8 @@
 		A8583C512A279265007BD3FC /* Views */ = {
 			isa = PBXGroup;
 			children = (
-				A8583C432A2658D2007BD3FC /* ContentView.swift */,
-				A8583C4F2A26BA95007BD3FC /* SegmentedCircle.swift */,
-				A8583C592A27937F007BD3FC /* CountdownTimer.swift */,
+				A83825A52A2F74D500598DEF /* LaunchScreen */,
+				A83825A42A2F74CA00598DEF /* RunScreen */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -91,6 +115,7 @@
 			isa = PBXGroup;
 			children = (
 				A8583C532A27927B007BD3FC /* RunningSegment.swift */,
+				A83825AA2A2F7B0600598DEF /* RunPreset.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -176,9 +201,12 @@
 				A8583C582A2792B7007BD3FC /* Color+Custom.swift in Sources */,
 				A8583C5A2A27937F007BD3FC /* CountdownTimer.swift in Sources */,
 				A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */,
+				A83825A72A2F74DE00598DEF /* LaunchView.swift in Sources */,
+				A83825A92A2F759A00598DEF /* RunPresetListViewItem.swift in Sources */,
 				A8583C502A26BA95007BD3FC /* SegmentedCircle.swift in Sources */,
 				A8583C422A2658D2007BD3FC /* FillCircleApp.swift in Sources */,
 				A8583C542A27927B007BD3FC /* RunningSegment.swift in Sources */,
+				A83825AB2A2F7B0600598DEF /* RunPreset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
