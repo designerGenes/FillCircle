@@ -10,6 +10,7 @@ import SwiftUI
 
 
 struct ContentView: View {
+    var audioController = AudioController()
     @State var isMenuOpen: Bool = false
     @State var percentFinished: Double = 0.0
     @State var segments: [RunningSegment]
@@ -74,7 +75,6 @@ struct ContentView: View {
                 }
             }
             .ignoresSafeArea()
-            .navigationBarTitle("Run")
             .offset(x: isMenuOpen ? -UIScreen.main.bounds.width / 2.5 : 0)
             .animation(Animation.easeInOut, value: 1)
             if isMenuOpen {
@@ -97,6 +97,20 @@ extension ContentView: CountdownTimerDelegate {
     // MARK: - CountdownTimerDelegate methods
     func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
         self.percentFinished = 1 - (remainingDuration / countdownDuration)
+        
+        var totalTime: TimeInterval = 0
+        var idx = 0
+        while totalTime < timer.timerTotalDuration - remainingDuration {
+            totalTime += segments[idx].duration
+            idx += 1
+        }
+        if totalTime == segments[0..<idx].reduce(0, {$0 + $1.duration}) {
+            didEnterNewSegment(idx: idx)
+        }
+    }
+    
+    func didEnterNewSegment(idx: Int) {
+        audioController.playClip(asset: .BeginRun)
     }
 }
 

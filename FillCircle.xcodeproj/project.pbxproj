@@ -10,6 +10,12 @@
 		A83825A72A2F74DE00598DEF /* LaunchView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825A62A2F74DE00598DEF /* LaunchView.swift */; };
 		A83825A92A2F759A00598DEF /* RunPresetListViewItem.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825A82A2F759A00598DEF /* RunPresetListViewItem.swift */; };
 		A83825AB2A2F7B0600598DEF /* RunPreset.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825AA2A2F7B0600598DEF /* RunPreset.swift */; };
+		A83825AD2A2FAD4D00598DEF /* DefaultPresetCollection.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825AC2A2FAD4D00598DEF /* DefaultPresetCollection.swift */; };
+		A83825B32A30144D00598DEF /* Cooldown.wav in Resources */ = {isa = PBXBuildFile; fileRef = A83825AF2A30144D00598DEF /* Cooldown.wav */; };
+		A83825B42A30144D00598DEF /* BeginRun.wav in Resources */ = {isa = PBXBuildFile; fileRef = A83825B02A30144D00598DEF /* BeginRun.wav */; };
+		A83825B52A30144D00598DEF /* OneMinute.wav in Resources */ = {isa = PBXBuildFile; fileRef = A83825B12A30144D00598DEF /* OneMinute.wav */; };
+		A83825B62A30144D00598DEF /* WarmUp.wav in Resources */ = {isa = PBXBuildFile; fileRef = A83825B22A30144D00598DEF /* WarmUp.wav */; };
+		A83825B92A3018BA00598DEF /* AudioController.swift in Sources */ = {isa = PBXBuildFile; fileRef = A83825B82A3018BA00598DEF /* AudioController.swift */; };
 		A8583C422A2658D2007BD3FC /* FillCircleApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C412A2658D2007BD3FC /* FillCircleApp.swift */; };
 		A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */ = {isa = PBXBuildFile; fileRef = A8583C432A2658D2007BD3FC /* ContentView.swift */; };
 		A8583C462A2658D4007BD3FC /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = A8583C452A2658D4007BD3FC /* Assets.xcassets */; };
@@ -24,6 +30,12 @@
 		A83825A62A2F74DE00598DEF /* LaunchView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LaunchView.swift; sourceTree = "<group>"; };
 		A83825A82A2F759A00598DEF /* RunPresetListViewItem.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunPresetListViewItem.swift; sourceTree = "<group>"; };
 		A83825AA2A2F7B0600598DEF /* RunPreset.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RunPreset.swift; sourceTree = "<group>"; };
+		A83825AC2A2FAD4D00598DEF /* DefaultPresetCollection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultPresetCollection.swift; sourceTree = "<group>"; };
+		A83825AF2A30144D00598DEF /* Cooldown.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Cooldown.wav; sourceTree = "<group>"; };
+		A83825B02A30144D00598DEF /* BeginRun.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = BeginRun.wav; sourceTree = "<group>"; };
+		A83825B12A30144D00598DEF /* OneMinute.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = OneMinute.wav; sourceTree = "<group>"; };
+		A83825B22A30144D00598DEF /* WarmUp.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = WarmUp.wav; sourceTree = "<group>"; };
+		A83825B82A3018BA00598DEF /* AudioController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AudioController.swift; sourceTree = "<group>"; };
 		A8583C3E2A2658D2007BD3FC /* FillCircle.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = FillCircle.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		A8583C412A2658D2007BD3FC /* FillCircleApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FillCircleApp.swift; sourceTree = "<group>"; };
 		A8583C432A2658D2007BD3FC /* ContentView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContentView.swift; sourceTree = "<group>"; };
@@ -65,6 +77,26 @@
 			path = LaunchScreen;
 			sourceTree = "<group>";
 		};
+		A83825AE2A30142800598DEF /* Assets */ = {
+			isa = PBXGroup;
+			children = (
+				A83825B02A30144D00598DEF /* BeginRun.wav */,
+				A83825AF2A30144D00598DEF /* Cooldown.wav */,
+				A83825B12A30144D00598DEF /* OneMinute.wav */,
+				A83825B22A30144D00598DEF /* WarmUp.wav */,
+				A8583C452A2658D4007BD3FC /* Assets.xcassets */,
+			);
+			path = Assets;
+			sourceTree = "<group>";
+		};
+		A83825B72A3018A700598DEF /* Controllers */ = {
+			isa = PBXGroup;
+			children = (
+				A83825B82A3018BA00598DEF /* AudioController.swift */,
+			);
+			path = Controllers;
+			sourceTree = "<group>";
+		};
 		A8583C352A2658D2007BD3FC = {
 			isa = PBXGroup;
 			children = (
@@ -84,11 +116,12 @@
 		A8583C402A2658D2007BD3FC /* FillCircle */ = {
 			isa = PBXGroup;
 			children = (
+				A83825B72A3018A700598DEF /* Controllers */,
+				A83825AE2A30142800598DEF /* Assets */,
 				A8583C562A2792AA007BD3FC /* Extensions */,
 				A8583C522A27926A007BD3FC /* Models */,
 				A8583C412A2658D2007BD3FC /* FillCircleApp.swift */,
 				A8583C512A279265007BD3FC /* Views */,
-				A8583C452A2658D4007BD3FC /* Assets.xcassets */,
 				A8583C472A2658D4007BD3FC /* Preview Content */,
 			);
 			path = FillCircle;
@@ -115,6 +148,7 @@
 			isa = PBXGroup;
 			children = (
 				A8583C532A27927B007BD3FC /* RunningSegment.swift */,
+				A83825AC2A2FAD4D00598DEF /* DefaultPresetCollection.swift */,
 				A83825AA2A2F7B0600598DEF /* RunPreset.swift */,
 			);
 			path = Models;
@@ -186,7 +220,11 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A83825B52A30144D00598DEF /* OneMinute.wav in Resources */,
+				A83825B32A30144D00598DEF /* Cooldown.wav in Resources */,
+				A83825B62A30144D00598DEF /* WarmUp.wav in Resources */,
 				A8583C492A2658D4007BD3FC /* Preview Assets.xcassets in Resources */,
+				A83825B42A30144D00598DEF /* BeginRun.wav in Resources */,
 				A8583C462A2658D4007BD3FC /* Assets.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -198,6 +236,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				A83825B92A3018BA00598DEF /* AudioController.swift in Sources */,
 				A8583C582A2792B7007BD3FC /* Color+Custom.swift in Sources */,
 				A8583C5A2A27937F007BD3FC /* CountdownTimer.swift in Sources */,
 				A8583C442A2658D2007BD3FC /* ContentView.swift in Sources */,
@@ -206,6 +245,7 @@
 				A8583C502A26BA95007BD3FC /* SegmentedCircle.swift in Sources */,
 				A8583C422A2658D2007BD3FC /* FillCircleApp.swift in Sources */,
 				A8583C542A27927B007BD3FC /* RunningSegment.swift in Sources */,
+				A83825AD2A2FAD4D00598DEF /* DefaultPresetCollection.swift in Sources */,
 				A83825AB2A2F7B0600598DEF /* RunPreset.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

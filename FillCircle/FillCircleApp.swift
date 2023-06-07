@@ -13,12 +13,6 @@ struct FillCircleApp: App {
         WindowGroup {
             NavigationView {
                 LaunchView()
-//                ContentView(segments: [
-//                    RunningSegment(duration: 30),
-//                    RunningSegment(duration: 10, isBreak: true),
-//                    RunningSegment(duration: 30),
-//                    RunningSegment(duration: 10, isBreak: true)
-//                ])
             }
         }
     }
