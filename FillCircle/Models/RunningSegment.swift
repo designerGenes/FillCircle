@@ -10,4 +10,6 @@ import Foundation
 struct RunningSegment {
     var duration: TimeInterval
     var isBreak: Bool = false
+    var isWarmup: Bool = false
+    var isCooldown: Bool = false        
 }

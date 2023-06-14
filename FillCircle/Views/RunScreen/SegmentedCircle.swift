@@ -9,18 +9,17 @@ import SwiftUI
 
 struct SegmentedCircle: View {
     var lineWidth: CGFloat = 30
-    var runningSegments: [RunningSegment] = []
-    private var totalDuration: TimeInterval {
-        runningSegments.reduce(0, {$0 + $1.duration})
-    }
+    var preset: RunPreset
     
     private func convertSegmentsToSlices() -> some View {
+        let runningSegments = preset.segments.filter({!($0.isCooldown) && !($0.isWarmup)})
+        let runningTime = runningSegments.reduce(0, {$0 + $1.duration})
         var slices: [AnyView] = []
         for (x, segment) in runningSegments.enumerated() {
-            let sumUsedPercentage = runningSegments[0..<x].reduce(0, {$0 + $1.duration}) / totalDuration
+            let sumUsedPercentage = runningSegments[0..<x].reduce(0, {$0 + $1.duration}) / runningTime
             let rotation = Double(360) * Double(sumUsedPercentage)
             let newSegment = Circle()
-                .trim(from: 0, to: CGFloat(segment.duration / totalDuration))
+                .trim(from: 0, to: CGFloat(segment.duration / runningTime))
                 .stroke(segment.isBreak ? Color.orange : .yellow,
                         style: StrokeStyle(lineWidth: lineWidth))
                 .rotationEffect(Angle(degrees: -90 + rotation))
@@ -34,12 +33,9 @@ struct SegmentedCircle: View {
     }
     
     var body: some View {
-        ZStack {
             Circle()
                 .stroke(Color.white.opacity(0.6), style: StrokeStyle(lineWidth: lineWidth))
             convertSegmentsToSlices()
-            
-        }
     }
 }
 
@@ -47,12 +43,7 @@ struct SegmentedCircle_Previews: PreviewProvider {
     static var previews: some View {
         ZStack {
             Color.blue.ignoresSafeArea()
-            SegmentedCircle(runningSegments: [
-                RunningSegment(duration: 120),
-                RunningSegment(duration: 120, isBreak: true),
-                RunningSegment(duration: 240),
-                RunningSegment(duration: 120, isBreak: true)
-            ])
+            SegmentedCircle(preset: DefaultPresetCollection[1].presets[1])
             .padding()
         }
     }

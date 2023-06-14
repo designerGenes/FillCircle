@@ -14,6 +14,9 @@ struct RunPresetListViewItem: View {
         self.runPreset = runPreset
     }
     
+    var iconName: String {
+        return UserProfileController.loadedUser?.completedRunPresets.contains(runPreset.id) == true ? "record.circle.fill" : "record.circle"
+    }
     var body: some View {
         VStack {
             HStack {
@@ -26,6 +29,10 @@ struct RunPresetListViewItem: View {
                     .font(.headline)
                     .foregroundColor(.white.opacity(0.8))
             }
+            Spacer()
+                .frame(height: 8)
+            Image(systemName: iconName)
+                .foregroundColor(.white)
         }
         .padding(EdgeInsets(top: 0, leading: 24, bottom: 0, trailing: 24))
         .frame(width: 120, height: 100, alignment: .center)

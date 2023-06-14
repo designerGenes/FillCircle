@@ -9,11 +9,13 @@ import Foundation
 import AVFoundation
 
 enum AudioClipAsset: String {
-    case BeginRun, Cooldown, OneMinute, WarmUp
+    case BeginRun, Cooldown, OneMinute, WarmUp, Halfway
 }
 
 class AudioController {
     var audioPlayer: AVAudioPlayer?
+    
+    
     
     func playClip(asset: AudioClipAsset) {
         guard let url = Bundle.main.url(forResource: asset.rawValue, withExtension: "wav") else {
@@ -24,7 +26,6 @@ class AudioController {
             audioPlayer = try AVAudioPlayer(contentsOf: url)
             audioPlayer?.play()
         } catch {
-            
         }
     }
 }

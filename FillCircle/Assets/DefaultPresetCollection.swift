@@ -9,6 +9,9 @@ import Foundation
 
 let DefaultPresetCollection: [RunPresetCollection] = [
     RunPresetCollection(presets: [
+        RunPreset(customName: "Custom", week: 0, day: 0, segments: []) // blank custom
+    ]),
+    RunPresetCollection(presets: [
         RunPreset(week: 1, day: 1, segments: [
             RunningSegment(duration: 60),
             RunningSegment(duration: 90, isBreak: true),

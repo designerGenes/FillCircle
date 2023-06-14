@@ -12,9 +12,29 @@ struct RunPreset: Identifiable {
     var customName: String = ""
     var week: Int
     var day: Int
-    var warmupTime: TimeInterval = 300
-    var cooldownTime: TimeInterval = 300
     var segments: [RunningSegment]
+    
+    var runningSegments: [RunningSegment] {
+        return segments.filter({!($0.isBreak) && !($0.isCooldown)})
+    }
+    
+    var warmupTime: TimeInterval {
+        return segments.filter({$0.isWarmup}).reduce(0, {$0 + $1.duration})
+    }
+    
+    var cooldownTime: TimeInterval {
+        return segments.filter({$0.isCooldown}).reduce(0, {$0 + $1.duration})
+    }
+    
+    var runningTime: TimeInterval {
+        // all time spent walking or running, except for warmup and cooldown
+        return runningSegments.reduce(0, {$0 + $1.duration})
+    }
+    var breakTime: TimeInterval {
+        // all time spent walking, except for warmup and cooldown
+        return segments.filter({$0.isBreak}).reduce(0, {$0 + $1.duration})
+    }
+    
     var title: String {
         return week > 0 ? "Week \(week)" : customName
     }
@@ -27,15 +47,13 @@ struct RunPreset: Identifiable {
         self.customName = customName
         self.week = week
         self.day = day
-        self.warmupTime = warmupTime
-        self.cooldownTime = cooldownTime
         var segments = segments
         if segments.count > 0 {
             if warmupTime > 0 {
-                segments.insert(RunningSegment(duration: warmupTime, isBreak: true), at: 0)
+                segments.insert(RunningSegment(duration: warmupTime, isWarmup: true), at: 0)
             }
             if cooldownTime > 0 {
-                segments.append(RunningSegment(duration: cooldownTime, isBreak: true))
+                segments.append(RunningSegment(duration: cooldownTime, isCooldown: true))
             }
         }
         

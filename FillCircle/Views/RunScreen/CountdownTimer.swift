@@ -7,46 +7,28 @@
 
 import SwiftUI
 
-enum CountdownTimerMode: Int {
-    case showRemainingSegmentDuration
-    case showRemainingDuration
-    case showSpentDuration
-    
-    static func values() -> [CountdownTimerMode] {
-        return [.showRemainingSegmentDuration, .showRemainingDuration, .showSpentDuration]
-    }
-    
-    func nextMode() -> CountdownTimerMode {
-        let curVal = self.rawValue
-        let allVals = CountdownTimerMode.values()
-        if curVal == allVals.last?.rawValue {
-            return allVals[0]
-        }
-        return allVals[curVal + 1]
-    }
-}
+
 
 protocol CountdownTimerDelegate {
     func didUpdate(timer: CountdownTimer, remainingDuration: Double)
+    func didReachThresholdInCountdown(timer: CountdownTimer, countdownThreshold: CountdownThreshold)
 }
 
 struct CountdownTimer: View {
-    @State var segments: [RunningSegment]
-    var timerTotalDuration: TimeInterval {
-        return segments.reduce(0, {$0 + $1.duration})
+    var runPreset: RunPreset
+
+    var timerRemainingDuration: TimeInterval {
+        return runPreset.runningTime - timerSpentDuration
     }
-    @State var timerRemainingDuration: TimeInterval
+ 
+    @State var timerSpentDuration: TimeInterval = 0
     @State private var isTimerFinished: Bool = false
     @State private var isTimerRunning = false
     @State private var isTimerPaused = false
     @State private var timer: Timer?
     var delegate: CountdownTimerDelegate?
     @State var timerMode: CountdownTimerMode = .showRemainingSegmentDuration
-    
-    init(segments: [RunningSegment]) {
-        self._segments = State(initialValue: segments)
-        self._timerRemainingDuration = State(initialValue: segments.reduce(0, {$0 + $1.duration}))
-    }
+
     
     var PlayStateButton: Image {
         let name = isTimerRunning ? "pause.rectangle.fill" : "play.square.fill"
@@ -78,20 +60,14 @@ struct CountdownTimer: View {
     
     func getCurrentSegmentRemainingTime() -> Double {
         var totalTime: Double = 0
-        let timeSpent = timerTotalDuration - timerRemainingDuration
-        for segment in segments {
+        for segment in runPreset.runningSegments {
             totalTime += segment.duration  // 30
-            if timeSpent < totalTime { // 10 < 30
-                let remainingSegmentTime = totalTime - timeSpent // 30 - 20
-                return remainingSegmentTime
+            if totalTime > timerSpentDuration { // 30 > 10
+                return totalTime - timerSpentDuration
             }
         }
         
         return 0
-    }
-    
-    private func tappedTimeDisplayModeButton() {
-        self.timerMode = self.timerMode.nextMode()
     }
     
     var body: some View {
@@ -114,25 +90,31 @@ struct CountdownTimer: View {
                 .resizable()
                 .frame(width: 30, height: 30)
                 .onTapGesture {
-                    tappedTimeDisplayModeButton()
+                    self.timerMode = self.timerMode.nextMode()
                 }
             Spacer()
             
         }
     }
     
+    private func ticktimer() {
+        
+        if timerRemainingDuration > 0 {
+            timerSpentDuration += 1
+        } else {
+            stopTimer()
+        }
+        self.delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
+    }
+    
     func startTimer() {
         timer = Timer.scheduledTimer(withTimeInterval: 1, repeats: true) { _ in
-            if timerRemainingDuration > 0 {
-                timerRemainingDuration -= 1
-            } else {
-                stopTimer()
-            }
-            self.delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
+            self.ticktimer()
         }
-        
+
         isTimerRunning = true
         isTimerPaused = false
+        self.delegate?.didUpdate(timer: self, remainingDuration: timerRemainingDuration)
     }
     
     func pauseTimer() {
@@ -148,7 +130,6 @@ struct CountdownTimer: View {
     }
     
     func stopTimer() {
-        timerRemainingDuration = 0
         self.isTimerFinished = true
         timer?.invalidate()
         timer = nil
@@ -164,8 +145,8 @@ struct CountdownTimer: View {
             minutes = Int(timerRemainingDuration) / 60
             seconds = Int(timerRemainingDuration) % 60
         case .showSpentDuration:
-            minutes = Int(timerTotalDuration - timerRemainingDuration) / 60
-            seconds = Int(timerTotalDuration - timerRemainingDuration) % 60
+            minutes = Int(runPreset.runningTime - timerRemainingDuration) / 60
+            seconds = Int(runPreset.runningTime - timerRemainingDuration) % 60
         case .showRemainingSegmentDuration:
             let remainingTime = getCurrentSegmentRemainingTime()
             minutes = Int(remainingTime) / 60
@@ -178,11 +159,11 @@ struct CountdownTimer: View {
 
 struct CountdownTimer_Previews: PreviewProvider {
     static var previews: some View {
-        CountdownTimer(segments: [
+        CountdownTimer(runPreset: RunPreset(week: 1, day: 1, segments: [
             RunningSegment(duration: 05),
             RunningSegment(duration: 50),
             RunningSegment(duration: 20, isBreak: true),
-        ])
+        ]))
         .padding()
     }
 }

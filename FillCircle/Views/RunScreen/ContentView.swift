@@ -10,13 +10,12 @@ import SwiftUI
 
 
 struct ContentView: View {
-    var audioController = AudioController()
+    let audioController = AudioController()
+    @State private var isWarmupCountdownComplete = false
+    @State private var isCooldownCountdownComplete = false
     @State var isMenuOpen: Bool = false
     @State var percentFinished: Double = 0.0
-    @State var segments: [RunningSegment]
-    var countdownDuration: TimeInterval {
-        return segments.reduce(0, { $0 + $1.duration })
-    }
+    var runPreset: RunPreset
     
     var lineWidth: CGFloat = 30.0
     
@@ -25,13 +24,43 @@ struct ContentView: View {
     }
     
     var Countdown: CountdownTimer {
-        var out = CountdownTimer(segments: segments)
+        var out = CountdownTimer(runPreset: runPreset)
         out.delegate = self
         return out
     }
     
-    func tappedOpenMenu() {
-        isMenuOpen = !isMenuOpen
+    var SegmentedCircleStack: some View {
+        ZStack {
+            Circle() // background
+                .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
+            SegmentedCircle(preset: runPreset)
+            Circle()
+                .padding() // center
+        }
+        .rotationEffect(Angle(degrees: (-360 * self.percentFinished)))
+        .padding(50)
+    }
+    
+    var TopMenu: some View {
+        HStack {
+            Spacer()
+            Image(systemName: "line.horizontal.3")
+                .foregroundColor(.yellow)
+                .onTapGesture {
+                    isMenuOpen = !isMenuOpen
+                }
+                .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 24))
+        }
+    }
+    
+    var HamburgerMenu: some View {
+        let width = UIScreen.main.bounds.width / 2.5
+        return Rectangle()
+            .foregroundColor(.yellow)
+            .frame(width: width, height: UIScreen.main.bounds.height)
+            .position(x: UIScreen.main.bounds.width - (width / 2), y: UIScreen.main.bounds.height / 2)
+            .ignoresSafeArea(.all)
+            .transition(.move(edge: .trailing))
     }
     
     var body: some View {
@@ -41,15 +70,7 @@ struct ContentView: View {
                 VStack {
                     Spacer()
                         .frame(height: 64)
-                    HStack {
-                        Spacer()
-                        Image(systemName: "line.horizontal.3")
-                            .foregroundColor(.yellow)
-                            .onTapGesture {
-                                tappedOpenMenu()
-                            }
-                            .padding(EdgeInsets(top: 0, leading: 0, bottom: 0, trailing: 24))
-                    }
+                    TopMenu
                     Spacer()
                 }
                 VStack {
@@ -63,29 +84,20 @@ struct ContentView: View {
                             }
                             .frame(width: 200, height: 50)
                     }
-                    ZStack {
-                        Circle() // background
-                            .stroke(Color.white.opacity(0.3), style: StrokeStyle(lineWidth: lineWidth))
-                        SegmentedCircle(runningSegments: segments)
-                        Circle()
-                            .padding() // center
-                    }
-                    .rotationEffect(Angle(degrees: (-360 * self.percentFinished)))
-                    .padding(50)
+                    SegmentedCircleStack
+                }
+                if !isWarmupCountdownComplete {
+                    WarmupCooldownTimer(countdownDuration: runPreset.warmupTime, isWarmup: true, isCountdownComplete: $isWarmupCountdownComplete)
+                }
+                if !isCooldownCountdownComplete && percentFinished >= 100 {
+                    WarmupCooldownTimer(countdownDuration: runPreset.cooldownTime, isWarmup: false, isCountdownComplete: $isCooldownCountdownComplete)
                 }
             }
             .ignoresSafeArea()
             .offset(x: isMenuOpen ? -UIScreen.main.bounds.width / 2.5 : 0)
             .animation(Animation.easeInOut, value: 1)
             if isMenuOpen {
-                let width = UIScreen.main.bounds.width / 2.5
-                Rectangle()
-                    .foregroundColor(.yellow)
-                    .frame(width: width, height: UIScreen.main.bounds.height)
-                    .position(x: UIScreen.main.bounds.width - (width / 2), y: UIScreen.main.bounds.height / 2)
-                    .ignoresSafeArea(.all)
-                    .transition(.move(edge: .trailing))
-                
+                HamburgerMenu
             }
         }
         
@@ -94,34 +106,23 @@ struct ContentView: View {
 }
 
 extension ContentView: CountdownTimerDelegate {
+    func didReachThresholdInCountdown(timer: CountdownTimer, countdownThreshold: CountdownThreshold) {
+        //
+    }
+    
     // MARK: - CountdownTimerDelegate methods
     func didUpdate(timer: CountdownTimer, remainingDuration: Double) {
-        self.percentFinished = 1 - (remainingDuration / countdownDuration)
-        
-        var totalTime: TimeInterval = 0
-        var idx = 0
-        while totalTime < timer.timerTotalDuration - remainingDuration {
-            totalTime += segments[idx].duration
-            idx += 1
-        }
-        if totalTime == segments[0..<idx].reduce(0, {$0 + $1.duration}) {
-            didEnterNewSegment(idx: idx)
-        }
+        self.percentFinished = 1 - (remainingDuration / runPreset.runningTime)
     }
     
     func didEnterNewSegment(idx: Int) {
-        audioController.playClip(asset: .BeginRun)
+        //        audioController.playClip(asset: .BeginRun)
     }
 }
 
 struct ContentView_Previews: PreviewProvider {
     static var previews: some View {
         ContentView(percentFinished: 0,
-                    segments: [
-                        RunningSegment(duration: 120),
-                        RunningSegment(duration: 60, isBreak: true),
-                        RunningSegment(duration: 120),
-                        RunningSegment(duration: 60, isBreak: true)
-                    ])
+                    runPreset: DefaultPresetCollection[1].presets[0])
     }
 }

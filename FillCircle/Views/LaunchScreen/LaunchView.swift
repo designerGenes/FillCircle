@@ -11,33 +11,8 @@ protocol RunPresetsListViewDelegate {
     func didTapRunPreset(preset: RunPreset)
 }
 
-struct RunPresetsListView: View {
-    @Binding var selectedRow: Int?
-    var delegate: RunPresetsListViewDelegate?
-    
-    var presets: [RunPreset]
-    
-    var body: some View {
-        VStack {
-            Spacer()
-            ScrollView(.horizontal) {
-                HStack(spacing: 10) {
-                    ForEach(presets) { preset in
-                        NavigationLink(destination: ContentView(segments: preset.segments)) {
-                            RunPresetListViewItem(runPreset: preset)
-                        }
-                    }
-                }
-                .padding()
-            }
-            .scrollIndicators(.hidden)
-        }
-        
-    }
-}
-
 struct LaunchView: View {
-    @State private var selectedRow: Int?
+    
   
     var allPresets: [RunPreset] {
         var presets: [RunPreset] = []
@@ -54,18 +29,27 @@ struct LaunchView: View {
                     .ignoresSafeArea()
                 VStack {
                     Spacer()
-                    RunPresetsListView(selectedRow: $selectedRow, presets: allPresets)
+                    ZStack {
+                        Rectangle()
+                            .frame(height: 64)
+                        .foregroundColor(.black)
+                        Text("Begin!")
+                            .foregroundColor(.white)
+                            .font(.title)
+                    }
+                    
+                    RunPresetsListView(presets: allPresets)
+                    Rectangle()
+                        .frame(height: 2)
+                        .foregroundColor(.orange)
                 }
                 .padding(EdgeInsets(top: 0, leading: 0, bottom: 32, trailing: 0))
-                .background(
-                    NavigationLink(
-                        destination: ContentView(segments: allPresets[selectedRow ?? 0].segments),
-                        tag: selectedRow ?? 0,
-                        selection: $selectedRow,
-                        label: { EmptyView() }
-                    )
-                    .hidden()
-                )
+//                .background(
+//                    NavigationLink(
+//                        <#LocalizedStringKey#>, destination: ContentView(preset: allPresets[selectedRow ?? 0])
+//                    )
+//                    .hidden()
+//                )
             }
         }
     }
